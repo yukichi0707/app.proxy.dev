@@ -1,2 +1,2 @@
-# docker.bbs
-掲示板用
+# app.proxy.local
+プロクシ用docker
