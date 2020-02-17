@@ -1,0 +1,4 @@
+etc/*
+etc/nginx/*
+etc/nginx/certs/*
+!etc/nginx/certs/.gitkeep

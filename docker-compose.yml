@@ -1,20 +1,42 @@
-version: '3'
-# proxy
+version: "3.3"
 services:
-
-  proxy:
+  nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
+    environment:
+      - "DHPARAM_GENERATION=false"
+    privileged: true
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - /etc/docker-compose.d/certs:/etc/nginx/certs
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/vhost.d
+      - ./docker/letsencrypt/etc/nginx/certs:/etc/nginx/certs:ro
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     restart: always
+    networks:
+      - common_link
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt
+    privileged: true
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+#      - proxy:/etc/nginx/vhost.d
+#      - proxy:/usr/share/nginx/html
+      - ./docker/letsencrypt/etc/nginx/certs:/etc/nginx/certs:rw
+    depends_on:
+      - nginx-proxy
+    restart: always
+    networks:
+      - common_link
 
 networks:
-  default:
-    external:
-      name: common_link
+  common_link:
+    external: true
 
