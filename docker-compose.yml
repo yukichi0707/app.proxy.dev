@@ -17,7 +17,7 @@ services:
       com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
     restart: always
     networks:
-      - common_link
+      - common_network
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
@@ -34,9 +34,9 @@ services:
       - nginx-proxy
     restart: always
     networks:
-      - common_link
+      - common_network
 
 networks:
-  common_link:
+  common_network:
     external: true
 
