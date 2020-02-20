@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+dc-up () 
+{ 
+    docker-compose up -d
+}
+dc-up
